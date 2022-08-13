@@ -23,15 +23,15 @@ session: Session = database.SessionLocal()
 
 @app.get("/media/{id}", response_model=schemas.MediaItem)
 async def read_media(id: int):
-    return session.query(MediaItem).filter(MediaItem.columns.Id == id).first()
+    return session.query(MediaItem).filter(MediaItem.columns.id == id).first()
 
 
 @app.get("/media/top/", response_model=list[schemas.MediaItem])
 async def get_top_media(limit: int = 10):
     return (
         session.query(models.MediaItem)
-        .order_by(MediaItem.c.Score.desc())
-        .group_by(MediaItem.c.Id)
+        .order_by(MediaItem.c.score.desc())
+        .group_by(MediaItem.c.id)
         .limit(limit)
         .all()
     )
@@ -46,8 +46,8 @@ async def get_all_tags():
 async def get_tags(id: int):
     return (
         session.query(Tag)
-        .join(MediaItemTag, MediaItemTag.columns.TagId == Tag.columns.Id)
-        .filter(MediaItemTag.columns.MediaItemId == id)
+        .join(MediaItemTag, MediaItemTag.columns.tag_id == Tag.columns.id)
+        .filter(MediaItemTag.columns.media_item_id == id)
         .all()
     )
 
@@ -60,7 +60,7 @@ async def write_tags(media_item_id: int, tags: schemas.TagList):
     ]
 
     session.execute(
-        MediaItemTag.delete().where(MediaItemTag.c.MediaItemId == media_item_id)
+        MediaItemTag.delete().where(MediaItemTag.c.media_item_id == media_item_id)
     )
     session.commit()
 

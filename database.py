@@ -6,18 +6,16 @@ from config import DB_PATH
 
 SQLALCHEMY_DB_URL = "sqlite:///" + DB_PATH
 
-engine = create_engine(
-    SQLALCHEMY_DB_URL, connect_args={"check_same_thread": False}
-)
+engine = create_engine(SQLALCHEMY_DB_URL, connect_args={"check_same_thread": False})
 
 MediaItemMeta = MetaData(engine)
-MediaItem = Table("MediaItem", MediaItemMeta, autoload=True)
+MediaItem = Table("media_item", MediaItemMeta, autoload=True)
 
 TagMeta = MetaData(engine)
-Tag = Table("Tag", TagMeta, autoload=True)
+Tag = Table("tag", TagMeta, autoload=True)
 
 MediaItemTagMeta = MetaData(engine)
-MediaItemTag = Table("MediaItemTag", MediaItemTagMeta, autoload=True)
+MediaItemTag = Table("media_item_tag", MediaItemTagMeta, autoload=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

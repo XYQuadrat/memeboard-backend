@@ -1,16 +1,12 @@
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel
 
 
-def to_camel(string: str) -> str:
-    return "".join(word.capitalize() for word in string.split("_"))
-
-
 class Model(BaseModel):
     class Config:
         orm_mode = True
-        alias_generator = to_camel
         allow_population_by_field_name = True
 
 
@@ -24,6 +20,8 @@ class MediaItem(Model):
     filename: str
     score: int
     author: str
+    message_url: str
+    created_date: datetime.datetime
     tags: list[Tag]
 
 
