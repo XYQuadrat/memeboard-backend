@@ -23,7 +23,7 @@ session: Session = database.SessionLocal()
 
 @app.get("/media/{id}", response_model=schemas.MediaItem)
 async def read_media(id: int):
-    return session.query(MediaItem).filter(MediaItem.columns.id == id).first()
+    return session.query(models.MediaItem).filter(models.MediaItem.id == id).first()
 
 
 @app.get("/media/top/", response_model=list[schemas.MediaItem])

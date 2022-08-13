@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import object_session
 
 from database import Base
@@ -20,7 +20,7 @@ class MediaItem(Base):
     author = Column("author", String)
     score = Column("score", Integer)
     message_url = Column("message_url", String)
-    created_date = Column("created_date", Date)
+    created_date = Column("created_date", DateTime)
 
     @property
     def tags(self):
@@ -32,7 +32,7 @@ class MediaItem(Base):
                 FROM tag JOIN media_item_tag ON tag.id = media_item_tag.tag_id
             ) AS tmp
             JOIN media_item ON media_item.id = tmp.media_item_id
-            WHERE media_item.Id = :id
+            WHERE media_item.id = :id
         """
         return (
             object_session(self).execute(statement, params={"id": self.id}).fetchall()
