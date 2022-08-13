@@ -21,7 +21,7 @@ class MediaItem(Model):
     score: int
     author: str
     message_url: str
-    created_date: datetime.datetime
+    created_date: datetime
     tags: list[Tag]
 
 

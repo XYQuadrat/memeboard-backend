@@ -20,7 +20,7 @@ class MediaItem(Base):
     author = Column("author", String)
     score = Column("score", Integer)
     message_url = Column("message_url", String)
-    created_date = Column("created_date", datetime.datetime)
+    created_date = Column("created_date", datetime)
 
     @property
     def tags(self):
