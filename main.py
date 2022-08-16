@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import label
 from sqlalchemy import func
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import schemas, database, models
 
@@ -28,6 +28,9 @@ async def read_media(id: int):
 
 @app.get("/media/top/", response_model=list[schemas.MediaItem])
 async def get_top_media(skip: int = 0, limit: int = 10):
+    if limit > 100:
+        raise HTTPException(status_code=418, detail="Exceeded maximum allowed limit.")
+
     return (
         session.query(models.MediaItem)
         .order_by(MediaItem.c.score.desc())
