@@ -27,12 +27,13 @@ async def read_media(id: int):
 
 
 @app.get("/media/top/", response_model=list[schemas.MediaItem])
-async def get_top_media(limit: int = 10):
+async def get_top_media(skip: int = 0, limit: int = 10):
     return (
         session.query(models.MediaItem)
         .order_by(MediaItem.c.score.desc())
         .group_by(MediaItem.c.id)
         .limit(limit)
+        .offset(skip)
         .all()
     )
 
