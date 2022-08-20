@@ -70,11 +70,11 @@ async def write_tags(media_item_id: int, tags: schemas.TagList):
 
     for media_item_tag in media_item_tags:
         session.execute(
-            insert(MediaItemTag)
+            insert(models.MediaItemTag)
             .values(
-                MediaItemId=media_item_tag.media_item_id, TagId=media_item_tag.tag_id
+                media_item_id=media_item_tag.media_item_id, tag_id=media_item_tag.tag_id
             )
-            .on_conflict_do_nothing(index_elements=["MediaItemId", "TagId"])
+            .on_conflict_do_nothing(index_elements=["media_item_id", "tag_id"])
         )
         session.commit()
 
