@@ -17,7 +17,7 @@ class MediaItem(Base):
 
     id = Column("id", Integer, primary_key=True)
     filename = Column("filename", String)
-    author = Column("author", String)
+    author_id = Column("author_id", String)
     score = Column("score", Integer)
     message_url = Column("message_url", String)
     created_date = Column("created_date", DateTime)
