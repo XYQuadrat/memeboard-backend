@@ -17,7 +17,7 @@ class MediaItem(Base):
 
     id = Column("id", Integer, primary_key=True)
     filename = Column("filename", String)
-    author_id = Column("author_id", String)
+    author_id = Column("author_id", Integer)
     score = Column("score", Integer)
     message_url = Column("message_url", String)
     created_date = Column("created_date", DateTime)
@@ -48,7 +48,8 @@ class MediaItem(Base):
             LIMIT 1
         """
 
-        return object_session(self).execute(statement, params={"author_id": self.author_id}).fetchone()
+        result = object_session(self).execute(statement, params={"author_id": self.author_id}).fetchone()
+        return result[0] if result is not None else "Unknown"
 
 
 class MediaItemTag(Base):

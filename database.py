@@ -17,6 +17,9 @@ Tag = Table("tag", TagMeta, autoload=True)
 MediaItemTagMeta = MetaData(engine)
 MediaItemTag = Table("media_item_tag", MediaItemTagMeta, autoload=True)
 
+UsernameMeta = MetaData(engine)
+Username = Table("username", UsernameMeta, autoload=True)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
