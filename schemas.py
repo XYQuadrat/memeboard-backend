@@ -17,7 +17,8 @@ class MediaItem(Model):
     id: int
     filename: str
     score: int
-    author_id: str
+    author_id: int
+    author_name: str
     message_url: str
     created_date: datetime
     tags: list[Tag]
