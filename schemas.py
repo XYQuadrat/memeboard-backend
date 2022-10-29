@@ -1,6 +1,4 @@
 from datetime import datetime
-from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -32,3 +30,8 @@ class MediaItemTag(Model):
 
 class TagList(Model):
     data: list[Tag]
+
+
+class Username(Model):
+    author_id: int
+    username: str

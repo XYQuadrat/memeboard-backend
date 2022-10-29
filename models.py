@@ -38,6 +38,18 @@ class MediaItem(Base):
             object_session(self).execute(statement, params={"id": self.id}).fetchall()
         )
 
+    @property
+    def author_name(self):
+        statement = """
+            SELECT username.username
+            FROM username
+            JOIN media_item ON media_item.author_id = username.author_id
+            WHERE media_item.author_id = :author_id
+            LIMIT 1
+        """
+
+        return object_session(self).execute(statement, params={"author_id": self.author_id}).fetchone()
+
 
 class MediaItemTag(Base):
     __tablename__ = "media_item_tag"
@@ -46,3 +58,10 @@ class MediaItemTag(Base):
         "media_item_id", Integer, ForeignKey(MediaItem.id), primary_key=True
     )
     tag_id = Column("tag_id", Integer, ForeignKey(Tag.id), primary_key=True)
+
+
+class Username(Base):
+    __tablename__ = "username"
+
+    author_id = Column("author_id", Integer)
+    username = Column("username", String)
