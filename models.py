@@ -63,5 +63,5 @@ class MediaItemTag(Base):
 class Username(Base):
     __tablename__ = "username"
 
-    author_id = Column("author_id", Integer)
+    author_id = Column("author_id", Integer, primary_key=True)
     username = Column("username", String)
