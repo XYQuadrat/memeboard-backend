@@ -92,3 +92,13 @@ async def get_untagged_id():
     )
 
     return untagged_media_item.first()
+
+
+@app.get("/tag/{tag_id}")
+async def get_items_with_tag(tag_id: int):
+    return (
+        session.query(MediaItem)
+        .join(MediaItemTag, MediaItemTag.columns.media_item_id == MediaItem.columns.id)
+        .filter(MediaItemTag.columns.tag_id == tag_id)
+        .all()
+    )
