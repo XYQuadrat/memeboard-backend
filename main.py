@@ -84,7 +84,7 @@ async def get_untagged_id():
     all_media_items = session.query(models.MediaItem.id.label("id"))
     all_tags = session.query(models.MediaItemTag.media_item_id.label("id"))
     untagged_media_item_id = (
-        all_media_items.except_(all_tags).order_by(models.MediaItem.score).limit(1)
+        all_media_items.except_(all_tags).order_by(func.random()).limit(1)
     )
 
     untagged_media_item: schemas.MediaItem = session.query(models.MediaItem).filter(
