@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import object_session
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from database import Base
 
@@ -22,8 +23,8 @@ class MediaItem(Base):
     message_url = Column("message_url", String)
     created_date = Column("created_date", DateTime)
 
-    @property
-    def tags(self):
+    @hybrid_property
+    def tags(self) -> list[Tag]:
         statement = """
             SELECT tmp.* FROM (
                 SELECT
@@ -37,6 +38,10 @@ class MediaItem(Base):
         return (
             object_session(self).execute(statement, params={"id": self.id}).fetchall()
         )
+
+    @tags.expression
+    def tags(cls):
+        return [Tag]
 
     @property
     def author_name(self):

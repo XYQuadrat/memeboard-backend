@@ -1,9 +1,10 @@
 from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import label
 from sqlalchemy import func
 
-from fastapi import FastAPI, HTTPException
+from typing import Union
+
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import schemas, database, models
 
@@ -27,12 +28,19 @@ async def read_media(id: int):
 
 
 @app.get("/media/top/", response_model=list[schemas.MediaItem])
-async def get_top_media(skip: int = 0, limit: int = 10):
+async def get_top_media(skip: int = 0, limit: int = 10, tag_id: Union[int,None] = Query(default=None)):
     if limit > 100:
         raise HTTPException(status_code=418, detail="Exceeded maximum allowed limit.")
 
-    return (
+    query = (
         session.query(models.MediaItem)
+    )
+
+    if tag_id:
+        query = query.join(models.MediaItemTag).filter(models.MediaItemTag.tag_id == tag_id)
+
+    return (
+        query
         .order_by(MediaItem.c.score.desc())
         .group_by(MediaItem.c.id)
         .limit(limit)
@@ -92,13 +100,3 @@ async def get_untagged_id():
     )
 
     return untagged_media_item.first()
-
-
-@app.get("/tag/{tag_id}", response_model=list[schemas.MediaItem])
-async def get_items_with_tag(tag_id: int):
-    return (
-        session.query(models.MediaItem)
-        .join(MediaItemTag, MediaItemTag.columns.media_item_id == MediaItem.columns.id)
-        .filter(MediaItemTag.columns.tag_id == tag_id)
-        .all()
-    )
